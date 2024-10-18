@@ -19,12 +19,12 @@ const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
 // but this version has inner-class nodes that it manages internally.
 class DoublyLinkedList
 {
-// Private variables, cannot be accessed outside of this class
+    // Private variables, cannot be accessed outside of this class
 private:
     // Node structure to hold data elements of type int with pointers to next and previous linked elements
     struct Node
     {
-        int data; // The main data of the node
+        int data;   // The main data of the node
         Node *prev; // Pointer to previous linked list location in memory
         Node *next; // Pointer to next linked list location in memory
         // Full parameter constructor for Node object that assigns received arguments directly to values. Member list assignment also possible
@@ -59,15 +59,15 @@ public:
 
         Node *newNode = new Node(value); // Creation of pointer to new node value to insert
         // If the head pointer is null, the list must be empty and this is the first node. Assign head and tail to node and return
-        if (!head) 
+        if (!head)
         {
             head = tail = newNode;
             return;
         }
 
         // If previous guard statements don't execute, create a temp node to iterate over list and find position to insert newNode
-        Node *temp = head; 
-        // Iterate over list starting from head node until you reach desired position or go out of bounds 
+        Node *temp = head;
+        // Iterate over list starting from head node until you reach desired position or go out of bounds
         for (int i = 0; i < position && temp; ++i)
             temp = temp->next;
 
@@ -80,8 +80,8 @@ public:
 
         // Otherwise we need to do some reorganizing to insert the newNode
         newNode->next = temp->next; // temp represents the node we want to insert newNode after, so temp.next becomes newNode's.next
-        newNode->prev = temp; // newNode points back to temp
-        if (temp->next) // If newNode's next element is NOT null, then we need that node to point back at newNode
+        newNode->prev = temp;       // newNode points back to temp
+        if (temp->next)             // If newNode's next element is NOT null, then we need that node to point back at newNode
             temp->next->prev = newNode;
         else // Otherwise we're at the end of the list so newNode is the new tail node and needs to be assigned
             tail = newNode;
@@ -104,13 +104,13 @@ public:
             return;
 
         // We found what we're looking for, so we need to do some house keeping
-        if (temp->prev) // If we're not at the head node
+        if (temp->prev)                    // If we're not at the head node
             temp->prev->next = temp->next; // Set previous element to point to the node AFTER the one we're deleting
         else
             head = temp->next; // Otherwise we are at the head, so next node becomes the head
 
         // Let's make sure the node has a next and isn't the tail
-        if (temp->next) // Not the tail node
+        if (temp->next)                    // Not the tail node
             temp->next->prev = temp->prev; // So the next node will point to the previous node after deletion
         else
             tail = temp->prev; // Otherwise we are at the tail, so the previous node becomes the tail.
@@ -163,20 +163,20 @@ public:
         Node *tempPrev = temp->prev; // tempPrev to represent node at previous index
         tempPrev->next = temp->next; // Previous node now pointing to next node in chain past item to delete
         temp->next->prev = tempPrev; // Next node to point back to previous
-        delete temp; // Finally delete the node at index
+        delete temp;                 // Finally delete the node at index
     }
 
     // Push new node into tail
     void push_back(int v)
     {
         Node *newNode = new Node(v); // Node to insert
-        if (!tail) // Empty list so newNode is head and tail
+        if (!tail)                   // Empty list so newNode is head and tail
             head = tail = newNode;
         else
         {
             tail->next = newNode; // Otherwise current tail points to newNode
             newNode->prev = tail; // newNode points back to previous tail
-            tail = newNode; // Reassign tail
+            tail = newNode;       // Reassign tail
         }
     }
 
@@ -184,13 +184,13 @@ public:
     void push_front(int v)
     {
         Node *newNode = new Node(v); // Node to insert
-        if (!head) // List is empty, so head and tail = newNode
+        if (!head)                   // List is empty, so head and tail = newNode
             head = tail = newNode;
         else
         {
             newNode->next = head; // newNode points to current head
             head->prev = newNode; // head points back to newNode
-            head = newNode; // newNode takes it's rightful place at the head
+            head = newNode;       // newNode takes it's rightful place at the head
         }
     }
 
@@ -209,12 +209,12 @@ public:
         // If head has a next value, meaning list is greater than just a single node
         if (head->next)
         {
-            head = head->next; // Head equals the following element
+            head = head->next;    // Head equals the following element
             head->prev = nullptr; // New head prev now equal to null
         }
         else
             head = tail = nullptr; // Otherwise there was only one element, so list is empty, set pointers to null
-        delete temp; // Clear value from heap
+        delete temp;               // Clear value from heap
     }
 
     // Same as pop_front, except for tail of list
@@ -230,12 +230,12 @@ public:
 
         if (tail->prev) // If more than one node in list
         {
-            tail = tail->prev; // Make previous node the new tail
+            tail = tail->prev;    // Make previous node the new tail
             tail->next = nullptr; // tail points to null
         }
         else
             head = tail = nullptr; // Otherwise only one element in list, pointers are both null
-        delete temp; // Clear memory location
+        delete temp;               // Clear memory location
     }
 
     // Destructor to clean up list nodes when list is to be destroyed. No memory leaks
@@ -245,7 +245,7 @@ public:
         {
             Node *temp = head; // Hold onto the node to be deleted
             head = head->next; // Reassign head for the moment
-            delete temp; // Release memory
+            delete temp;       // Release memory
         }
     }
 
@@ -253,7 +253,7 @@ public:
     void print()
     {
         Node *current = head; // Start with head
-        if (!current) // If no head, list is empty, just return
+        if (!current)         // If no head, list is empty, just return
         {
             cout << "List is empty." << endl;
             return;
@@ -261,7 +261,7 @@ public:
         while (current) // While there are nodes
         {
             cout << current->data << " "; // Print current node item
-            current = current->next; // Go to next element
+            current = current->next;      // Go to next element
         }
         cout << endl; // Spacing
     }
@@ -270,7 +270,7 @@ public:
     void print_reverse()
     {
         Node *current = tail; // Start with tail
-        if (!current) // List is empty, so just return
+        if (!current)         // List is empty, so just return
         {
             cout << "List is empty." << endl;
             return;
@@ -278,15 +278,16 @@ public:
         while (current) // While nodes in list
         {
             cout << current->data << " "; // Print node data
-            current = current->prev; // Go to previous node
+            current = current->prev;      // Go to previous node
         }
         cout << endl;
     }
 
     // Additional class method
-    void every_other_element() {
+    void every_other_element()
+    {
         Node *current = head; // Start with head
-        if (!current) // If no head, list is empty, just return
+        if (!current)         // If no head, list is empty, just return
         {
             cout << "List is empty." << endl;
             return;
@@ -294,13 +295,17 @@ public:
         while (current) // While there are nodes
         {
             cout << current->data << " "; // Print current node item
-            current = current->next->next; // Go to next next element
+            // Go to next next element
+            if (current->next != nullptr && current->next->next != nullptr)
+            {
+                current = current->next->next;
+            } else {
+                current = nullptr;
+            }
         }
         cout << endl; // Spacing
     }
 };
-
-
 
 int main()
 {
@@ -308,7 +313,8 @@ int main()
     DoublyLinkedList list;
 
     cout << "List items:" << endl;
-    for (int i = 1; i < 30; i++) {
+    for (int i = 1; i < 30; i++)
+    {
         list.push_back(i);
         cout << "Added element: " << i << endl;
     }
