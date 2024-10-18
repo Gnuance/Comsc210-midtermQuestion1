@@ -107,41 +107,46 @@ public:
         if (temp->prev) // If we're not at the head node
             temp->prev->next = temp->next; // Set previous element to point to the node AFTER the one we're deleting
         else
-            head = temp->next;
+            head = temp->next; // Otherwise we are at the head, so next node becomes the head
 
-        if (temp->next)
-            temp->next->prev = temp->prev;
+        // Let's make sure the node has a next and isn't the tail
+        if (temp->next) // Not the tail node
+            temp->next->prev = temp->prev; // So the next node will point to the previous node after deletion
         else
-            tail = temp->prev;
+            tail = temp->prev; // Otherwise we are at the tail, so the previous node becomes the tail.
 
-        delete temp;
+        delete temp; // Finally we can clear the memory
     }
 
+    // Delete node at given poistion
     void delete_pos(int pos)
     {
+        // Guard statement: there's no head, so list is empty, nothing to delete, just return
         if (!head)
         {
             cout << "List is empty." << endl;
             return;
         }
 
+        // I would prefer pos == 0, but it works
         if (pos == 1)
         {
-            pop_front();
+            pop_front(); // Method below: delete first element and reset head. Does not return a value
             return;
         }
 
-        Node *temp = head;
+        Node *temp = head; // Temp value for iteration like above
 
+        // Iterate until desired position
         for (int i = 1; i < pos; i++)
         {
-            if (!temp)
+            if (!temp) // If position out of bounds, exit
             {
                 cout << "Position doesn't exist." << endl;
                 return;
             }
             else
-                temp = temp->next;
+                temp = temp->next; // Else move to the following node
         }
         if (!temp)
         {
@@ -187,25 +192,27 @@ public:
         }
     }
 
+    // Deletes front element, but doesn't return a value typical of pop
     void pop_front()
     {
 
-        if (!head)
+        if (!head) // Guard statement: there's no head, so list is empty, nothing to delete, just return
         {
             cout << "List is empty." << endl;
             return;
         }
 
-        Node *temp = head;
+        Node *temp = head; // Same as above, create temp node for iteration
 
+        // If head has a next value, meaning list is greater than just a single node
         if (head->next)
         {
-            head = head->next;
-            head->prev = nullptr;
+            head = head->next; // Head equals the following element
+            head->prev = nullptr; // New head prev now equal to null
         }
         else
-            head = tail = nullptr;
-        delete temp;
+            head = tail = nullptr; // Otherwise there was only one element, so list is empty, set pointers to null
+        delete temp; // Clear value from heap
     }
 
     void pop_back()
