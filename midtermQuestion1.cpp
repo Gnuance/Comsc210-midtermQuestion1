@@ -15,15 +15,19 @@ using namespace std;
 // I think in my goat herd program that was based off this template, I actually moved them into main just to make the code "safer".
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
 
-//
+// Doubly linked list class object. Technically the really important part is the node pointers to the head and tail of the linked list,
+// but this version has inner-class nodes that it manages internally.
 class DoublyLinkedList
 {
+// Private variables, cannot be accessed outside of this class
 private:
+    // Node structure to hold data elements of type int with pointers to next and previous linked elements
     struct Node
     {
-        int data;
-        Node *prev;
-        Node *next;
+        int data; // The main data of the node
+        Node *prev; // Pointer to previous linked list location in memory
+        Node *next; // Pointer to next linked list location in memory
+        // Full parameter constructor for Node object that assigns received arguments directly to values. Member list assignment also possible
         Node(int val, Node *p = nullptr, Node *n = nullptr)
         {
             data = val;
@@ -32,32 +36,37 @@ private:
         }
     };
 
-    Node *head;
-    Node *tail;
+    Node *head; // Pointer to the head element of the linked list
+    Node *tail; // Pointer to the tail element of the linked list
 
 public:
+    // Class constructor to initialize empty linked list and assign pointers to null until initialized with nodes
     DoublyLinkedList()
     {
         head = nullptr;
         tail = nullptr;
     }
 
+    // Because Node and the list are coupled, this function receives an int value, then creates a node and inserts in given position
     void insert_after(int value, int position)
     {
+        // Guard statement: if position given by user is out of bounds, don't waste time, just return with console message
         if (position < 0)
         {
             cout << "Position must be >= 0." << endl;
             return;
         }
 
-        Node *newNode = new Node(value);
-        if (!head)
+        Node *newNode = new Node(value); // Creation of pointer to new node value to insert
+        // If the head pointer is null, the list must be empty and this is the first node. Assign head and tail to node and return
+        if (!head) 
         {
             head = tail = newNode;
             return;
         }
 
-        Node *temp = head;
+        // If previous guard statements don't execute, create a temp node to iterate over list and find position to insert newNode
+        Node *temp = head; 
         for (int i = 0; i < position && temp; ++i)
             temp = temp->next;
 
