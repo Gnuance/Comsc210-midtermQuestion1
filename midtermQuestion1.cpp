@@ -269,30 +269,52 @@ public:
     // Same as above, just in reverse
     void print_reverse()
     {
-        Node *current = tail;
-        if (!current)
+        Node *current = tail; // Start with tail
+        if (!current) // List is empty, so just return
         {
             cout << "List is empty." << endl;
             return;
         }
-        while (current)
+        while (current) // While nodes in list
         {
-            cout << current->data << " ";
-            current = current->prev;
+            cout << current->data << " "; // Print node data
+            current = current->prev; // Go to previous node
         }
         cout << endl;
     }
+
+    // Additional class method
+    void every_other_element() {
+        Node *current = head; // Start with head
+        if (!current) // If no head, list is empty, just return
+        {
+            cout << "List is empty." << endl;
+            return;
+        }
+        while (current) // While there are nodes
+        {
+            cout << current->data << " "; // Print current node item
+            current = current->next->next; // Go to next next element
+        }
+        cout << endl; // Spacing
+    }
 };
 
-// Function declarations
-void every_other_element();
+
 
 int main()
 {
     cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS; // dummy statement to avoid compiler warning
+    DoublyLinkedList list;
+
+    cout << "List items:" << endl;
+    for (int i = 1; i < 30; i++) {
+        list.push_back(i);
+        cout << "Added element: " << i << endl;
+    }
+
+    cout << "every_other_element" << endl;
+    list.every_other_element();
 
     return 0;
 }
-
-// Function definitions
-void every_other_element() {};
