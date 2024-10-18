@@ -67,40 +67,45 @@ public:
 
         // If previous guard statements don't execute, create a temp node to iterate over list and find position to insert newNode
         Node *temp = head; 
+        // Iterate over list starting from head node until you reach desired position or go out of bounds 
         for (int i = 0; i < position && temp; ++i)
             temp = temp->next;
 
-        if (!temp)
+        if (!temp) // Iteration has gone out of bounds, so output error message, delete node to clear memory since we can't use it, and return
         {
             cout << "Position exceeds list size. Node not inserted.\n";
             delete newNode;
             return;
         }
 
-        newNode->next = temp->next;
-        newNode->prev = temp;
-        if (temp->next)
+        // Otherwise we need to do some reorganizing to insert the newNode
+        newNode->next = temp->next; // temp represents the node we want to insert newNode after, so temp.next becomes newNode's.next
+        newNode->prev = temp; // newNode points back to temp
+        if (temp->next) // If newNode's next element is NOT null, then we need that node to point back at newNode
             temp->next->prev = newNode;
-        else
+        else // Otherwise we're at the end of the list so newNode is the new tail node and needs to be assigned
             tail = newNode;
-        temp->next = newNode;
+        temp->next = newNode; // temp is now in front of newNode and points it's next pointer to it
     }
 
+    // Deletes a given node based on it's integer value
     void delete_val(int value)
     {
-        if (!head)
+        if (!head) // Guard statement: there's no head, so list is empty, nothing to delete, just return
             return;
 
-        Node *temp = head;
+        Node *temp = head; // Otherwise let's create a temp pointer and start iterating until we find the right node
 
+        // Keep iterating while there are values in the list and the current value != what we're looking for
         while (temp && temp->data != value)
             temp = temp->next;
 
-        if (!temp)
+        if (!temp) // We've iterated the entire list and found nothing. Just return
             return;
 
-        if (temp->prev)
-            temp->prev->next = temp->next;
+        // We found what we're looking for, so we need to do some house keeping
+        if (temp->prev) // If we're not at the head node
+            temp->prev->next = temp->next; // Set previous element to point to the node AFTER the one we're deleting
         else
             head = temp->next;
 
