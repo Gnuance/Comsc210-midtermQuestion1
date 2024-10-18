@@ -148,47 +148,49 @@ public:
             else
                 temp = temp->next; // Else move to the following node
         }
-        if (!temp)
+        if (!temp) // If position out of bounds, exit
         {
             cout << "Position doesn't exist." << endl;
             return;
         }
 
-        if (!temp->next)
+        if (!temp->next) // If we're at the index we want, but next node is null, we must be at tail
         {
-            pop_back();
+            pop_back(); // Delete tail node and reassign tail
             return;
         }
 
-        Node *tempPrev = temp->prev;
-        tempPrev->next = temp->next;
-        temp->next->prev = tempPrev;
-        delete temp;
+        Node *tempPrev = temp->prev; // tempPrev to represent node at previous index
+        tempPrev->next = temp->next; // Previous node now pointing to next node in chain past item to delete
+        temp->next->prev = tempPrev; // Next node to point back to previous
+        delete temp; // Finally delete the node at index
     }
 
+    // Push new node into tail
     void push_back(int v)
     {
-        Node *newNode = new Node(v);
-        if (!tail)
+        Node *newNode = new Node(v); // Node to insert
+        if (!tail) // Empty list so newNode is head and tail
             head = tail = newNode;
         else
         {
-            tail->next = newNode;
-            newNode->prev = tail;
-            tail = newNode;
+            tail->next = newNode; // Otherwise current tail points to newNode
+            newNode->prev = tail; // newNode points back to previous tail
+            tail = newNode; // Reassign tail
         }
     }
 
+    // Same thing as tail but for head
     void push_front(int v)
     {
-        Node *newNode = new Node(v);
-        if (!head)
+        Node *newNode = new Node(v); // Node to insert
+        if (!head) // List is empty, so head and tail = newNode
             head = tail = newNode;
         else
         {
-            newNode->next = head;
-            head->prev = newNode;
-            head = newNode;
+            newNode->next = head; // newNode points to current head
+            head->prev = newNode; // head points back to newNode
+            head = newNode; // newNode takes it's rightful place at the head
         }
     }
 
@@ -215,50 +217,56 @@ public:
         delete temp; // Clear value from heap
     }
 
+    // Same as pop_front, except for tail of list
     void pop_back()
     {
-        if (!tail)
+        if (!tail) // tail is empty, therefore list is empty
         {
             cout << "List is empty." << endl;
             return;
         }
-        Node *temp = tail;
 
-        if (tail->prev)
+        Node *temp = tail; // Otherwise create a temp pointing to current tail
+
+        if (tail->prev) // If more than one node in list
         {
-            tail = tail->prev;
-            tail->next = nullptr;
+            tail = tail->prev; // Make previous node the new tail
+            tail->next = nullptr; // tail points to null
         }
         else
-            head = tail = nullptr;
-        delete temp;
+            head = tail = nullptr; // Otherwise only one element in list, pointers are both null
+        delete temp; // Clear memory location
     }
 
+    // Destructor to clean up list nodes when list is to be destroyed. No memory leaks
     ~DoublyLinkedList()
     {
-        while (head)
+        while (head) // While nodes in list
         {
-            Node *temp = head;
-            head = head->next;
-            delete temp;
+            Node *temp = head; // Hold onto the node to be deleted
+            head = head->next; // Reassign head for the moment
+            delete temp; // Release memory
         }
     }
+
+    // Prints the entire list. I prefer toString personally
     void print()
     {
-        Node *current = head;
-        if (!current)
+        Node *current = head; // Start with head
+        if (!current) // If no head, list is empty, just return
         {
             cout << "List is empty." << endl;
             return;
         }
-        while (current)
+        while (current) // While there are nodes
         {
-            cout << current->data << " ";
-            current = current->next;
+            cout << current->data << " "; // Print current node item
+            current = current->next; // Go to next element
         }
-        cout << endl;
+        cout << endl; // Spacing
     }
 
+    // Same as above, just in reverse
     void print_reverse()
     {
         Node *current = tail;
