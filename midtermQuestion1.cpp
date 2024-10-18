@@ -1,44 +1,68 @@
+/*  Midterm 1: Question 1
+    Program requirements:
+        1. Fully comment each instruction in the code, explaining what's happening on that particular line.
+            I want you to convince me that you understand what's happening with every pointer and line of code.
+        2. Additionally, write a class method every_other_element() that will output the data structure starting with the first element,
+            skip the second element, output the third, skip fourth, etc. Demo this method in your code.
+*/
+
+// Import iostream functionality for console input/output. Std namespace so std:: doesn't clutter all the code
 #include <iostream>
 using namespace std;
 
+// Global constants
+// I personally don't see a reason to place these constants in the global scope, simply because the only usage I see is in main.
+// I think in my goat herd program that was based off this template, I actually moved them into main just to make the code "safer".
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
 
-class DoublyLinkedList {
+//
+class DoublyLinkedList
+{
 private:
-    struct Node {
+    struct Node
+    {
         int data;
-        Node* prev;
-        Node* next;
-        Node(int val, Node* p = nullptr, Node* n = nullptr) {
-            data = val; 
+        Node *prev;
+        Node *next;
+        Node(int val, Node *p = nullptr, Node *n = nullptr)
+        {
+            data = val;
             prev = p;
             next = n;
         }
     };
 
-    Node* head;
-    Node* tail;
+    Node *head;
+    Node *tail;
 
 public:
-    DoublyLinkedList() { head = nullptr; tail = nullptr; }
+    DoublyLinkedList()
+    {
+        head = nullptr;
+        tail = nullptr;
+    }
 
-    void insert_after(int value, int position) {
-        if (position < 0) {
+    void insert_after(int value, int position)
+    {
+        if (position < 0)
+        {
             cout << "Position must be >= 0." << endl;
             return;
         }
 
-        Node* newNode = new Node(value);
-        if (!head) {
+        Node *newNode = new Node(value);
+        if (!head)
+        {
             head = tail = newNode;
             return;
         }
 
-        Node* temp = head;
+        Node *temp = head;
         for (int i = 0; i < position && temp; ++i)
             temp = temp->next;
 
-        if (!temp) {
+        if (!temp)
+        {
             cout << "Position exceeds list size. Node not inserted.\n";
             delete newNode;
             return;
@@ -53,98 +77,115 @@ public:
         temp->next = newNode;
     }
 
-    void delete_val(int value) {
-        if (!head) return;
+    void delete_val(int value)
+    {
+        if (!head)
+            return;
 
-        Node* temp = head;
-        
+        Node *temp = head;
+
         while (temp && temp->data != value)
             temp = temp->next;
 
-        if (!temp) return; 
+        if (!temp)
+            return;
 
         if (temp->prev)
             temp->prev->next = temp->next;
         else
-            head = temp->next; 
+            head = temp->next;
 
         if (temp->next)
             temp->next->prev = temp->prev;
         else
-            tail = temp->prev; 
+            tail = temp->prev;
 
         delete temp;
     }
 
-    void delete_pos(int pos) {
-        if (!head) {
+    void delete_pos(int pos)
+    {
+        if (!head)
+        {
             cout << "List is empty." << endl;
             return;
         }
-    
-        if (pos == 1) {
+
+        if (pos == 1)
+        {
             pop_front();
             return;
         }
-    
-        Node* temp = head;
-    
-        for (int i = 1; i < pos; i++){
-            if (!temp) {
+
+        Node *temp = head;
+
+        for (int i = 1; i < pos; i++)
+        {
+            if (!temp)
+            {
                 cout << "Position doesn't exist." << endl;
                 return;
             }
             else
                 temp = temp->next;
         }
-        if (!temp) {
+        if (!temp)
+        {
             cout << "Position doesn't exist." << endl;
             return;
         }
-    
-        if (!temp->next) {
+
+        if (!temp->next)
+        {
             pop_back();
             return;
         }
-    
-        Node* tempPrev = temp->prev;
+
+        Node *tempPrev = temp->prev;
         tempPrev->next = temp->next;
         temp->next->prev = tempPrev;
         delete temp;
     }
 
-    void push_back(int v) {
-        Node* newNode = new Node(v);
+    void push_back(int v)
+    {
+        Node *newNode = new Node(v);
         if (!tail)
             head = tail = newNode;
-        else {
+        else
+        {
             tail->next = newNode;
             newNode->prev = tail;
             tail = newNode;
         }
     }
-    
-    void push_front(int v) {
-        Node* newNode = new Node(v);
+
+    void push_front(int v)
+    {
+        Node *newNode = new Node(v);
         if (!head)
             head = tail = newNode;
-        else {
+        else
+        {
             newNode->next = head;
             head->prev = newNode;
             head = newNode;
         }
     }
-    
-    void pop_front() {
 
-        if (!head) {
+    void pop_front()
+    {
+
+        if (!head)
+        {
             cout << "List is empty." << endl;
             return;
         }
 
-        Node * temp = head;
+        Node *temp = head;
 
-        if (head->next) {
+        if (head->next)
+        {
             head = head->next;
             head->prev = nullptr;
         }
@@ -153,14 +194,17 @@ public:
         delete temp;
     }
 
-    void pop_back() {
-        if (!tail) {
+    void pop_back()
+    {
+        if (!tail)
+        {
             cout << "List is empty." << endl;
             return;
         }
-        Node * temp = tail;
+        Node *temp = tail;
 
-        if (tail->prev) {
+        if (tail->prev)
+        {
             tail = tail->prev;
             tail->next = nullptr;
         }
@@ -169,33 +213,41 @@ public:
         delete temp;
     }
 
-    ~DoublyLinkedList() {
-        while (head) {
-            Node* temp = head;
+    ~DoublyLinkedList()
+    {
+        while (head)
+        {
+            Node *temp = head;
             head = head->next;
             delete temp;
         }
     }
-    void print() {
-        Node* current = head;
-        if (!current) {
+    void print()
+    {
+        Node *current = head;
+        if (!current)
+        {
             cout << "List is empty." << endl;
             return;
         }
-        while (current) {
+        while (current)
+        {
             cout << current->data << " ";
             current = current->next;
         }
         cout << endl;
     }
 
-    void print_reverse() {
-        Node* current = tail;
-        if (!current) { 
+    void print_reverse()
+    {
+        Node *current = tail;
+        if (!current)
+        {
             cout << "List is empty." << endl;
             return;
         }
-        while (current) {
+        while (current)
+        {
             cout << current->data << " ";
             current = current->prev;
         }
@@ -203,9 +255,15 @@ public:
     }
 };
 
-int main() {
-    cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
+// Function declarations
+void every_other_element();
 
-    
+int main()
+{
+    cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS; // dummy statement to avoid compiler warning
+
     return 0;
 }
+
+// Function definitions
+void every_other_element() {};
